@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Order extends AggregateRoot<OrderId> {
-    private final CustumerId custumerId;
+    private final CustomerId customerId;
     private final RestaurantId restaurantId;
     private final StreetAddress deliveryAddress;
     private final Money price;
@@ -79,7 +79,7 @@ public class Order extends AggregateRoot<OrderId> {
             return orderItem.getSubTotal();
         }).reduce(Money.ZERO, Money::add);
 
-        if (price.equals(orderItemsTotal)) {
+        if (!price.equals(orderItemsTotal)) {
             throw new OrderDomainException("Total price (" + price.getAmount() + ") is not equal to the sum of the items (" + orderItemsTotal.getAmount() + ")");
         }
     }
@@ -111,7 +111,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     private Order(Builder builder) {
         super.setId(builder.orderId);
-        custumerId = builder.custumerId;
+        customerId = builder.customerId;
         restaurantId = builder.restaurantId;
         deliveryAddress = builder.deliveryAddress;
         price = builder.price;
@@ -125,8 +125,8 @@ public class Order extends AggregateRoot<OrderId> {
         return new Builder();
     }
 
-    public CustumerId getCostumerId() {
-        return custumerId;
+    public CustomerId getCostumerId() {
+        return customerId;
     }
 
     public RestaurantId getRestaurantId() {
@@ -159,7 +159,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     public static final class Builder {
         private OrderId orderId;
-        private CustumerId custumerId;
+        private CustomerId customerId;
         private RestaurantId restaurantId;
         private StreetAddress deliveryAddress;
         private Money price;
@@ -176,8 +176,8 @@ public class Order extends AggregateRoot<OrderId> {
             return this;
         }
 
-        public Builder customerId(CustumerId val) {
-            custumerId = val;
+        public Builder customerId(CustomerId val) {
+            customerId = val;
             return this;
         }
 
