@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "order_customer_m_v", schema = "customer")
+@Table(name = "order_customer_m_view", schema = "customer")
 @Getter
 @Setter
 @Builder
