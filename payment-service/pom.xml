@@ -9,14 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>order-service</artifactId>
+    <artifactId>payment-service</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>order-domain</module>
-        <module>order-application</module>
-        <module>order-dataaccess</module>
-        <module>order-messaging</module>
-        <module>order-container</module>
+        <module>payment-domain</module>
+        <module>payment-messaging</module>
+        <module>payment-container</module>
+        <module>payment-domain/payment-domain-core</module>
+        <module>payment-dataaccess</module>
     </modules>
 
 
