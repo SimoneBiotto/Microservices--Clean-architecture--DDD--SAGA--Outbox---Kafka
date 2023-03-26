@@ -16,7 +16,5 @@
         <module>order-application-service</module>
     </modules>
 
-    <properties>
-    </properties>
 
 </project>

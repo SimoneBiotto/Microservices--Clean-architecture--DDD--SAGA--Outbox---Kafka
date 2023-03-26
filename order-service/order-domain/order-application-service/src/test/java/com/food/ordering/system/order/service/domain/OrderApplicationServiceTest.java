@@ -62,13 +62,13 @@ public class OrderApplicationServiceTest {
         createOrderCommand = CreateOrderCommand.builder()
                 .customerId(CUSTOMER_ID)
                 .restaurantId(RESTAURANT_ID)
-                .orderAddress(OrderAddress.builder()
+                .address(OrderAddress.builder()
                         .street("Via Roma")
                         .city("Roma")
                         .postalCode("123456")
                         .build())
                 .price(PRICE)
-                .orderItems(List.of(
+                .items(List.of(
                         OrderItem.builder()
                                 .productId(PRODUCT_ID)
                                 .quantity(1)
@@ -86,13 +86,13 @@ public class OrderApplicationServiceTest {
         createOrderCommandWrongPrice = CreateOrderCommand.builder()
                 .customerId(CUSTOMER_ID)
                 .restaurantId(RESTAURANT_ID)
-                .orderAddress(OrderAddress.builder()
+                .address(OrderAddress.builder()
                         .street("Via Roma")
                         .city("Roma")
                         .postalCode("123456")
                         .build())
                 .price(new BigDecimal("250.00"))
-                .orderItems(List.of(
+                .items(List.of(
                         OrderItem.builder()
                                 .productId(PRODUCT_ID)
                                 .quantity(1)
@@ -110,13 +110,13 @@ public class OrderApplicationServiceTest {
         createOrderCommandWrongProductPrice = CreateOrderCommand.builder()
                 .customerId(CUSTOMER_ID)
                 .restaurantId(RESTAURANT_ID)
-                .orderAddress(OrderAddress.builder()
+                .address(OrderAddress.builder()
                         .street("Via Roma")
                         .city("Roma")
                         .postalCode("123456")
                         .build())
                 .price(new BigDecimal("210.00"))
-                .orderItems(List.of(
+                .items(List.of(
                         OrderItem.builder()
                                 .productId(PRODUCT_ID)
                                 .quantity(1)
