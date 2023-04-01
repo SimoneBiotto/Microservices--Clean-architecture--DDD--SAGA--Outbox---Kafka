@@ -79,10 +79,10 @@ public class OrderMessagingDataMapper {
         return RestaurantApprovalResponse.builder()
                 .id(restaurantApprovalResponseAvroModel.getId())
                 .sagaId(restaurantApprovalResponseAvroModel.getSagaId())
+                .restaurantId(restaurantApprovalResponseAvroModel.getRestaurantId())
                 .orderId(restaurantApprovalResponseAvroModel.getOrderId())
                 .createdAt(restaurantApprovalResponseAvroModel.getCreatedAt())
                 .orderApprovalStatus(OrderApprovalStatus.valueOf(restaurantApprovalResponseAvroModel.getOrderApprovalStatus().name()))
-                .restaurantId(restaurantApprovalResponseAvroModel.getRestaurantId())
                 .failureMessages(restaurantApprovalResponseAvroModel.getFailureMessages())
                 .build();
     }
