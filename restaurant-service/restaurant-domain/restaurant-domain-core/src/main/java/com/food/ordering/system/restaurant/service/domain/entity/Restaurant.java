@@ -26,7 +26,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
             return product.getPrice().multiply(product.getQuantity());
         }).reduce(Money.ZERO, Money::add);
 
-        if (totalAmount.equals(orderDetail.getTotalAmount())) {
+        if (!totalAmount.equals(orderDetail.getTotalAmount())) {
             failureMessage.add("Total amount is not correct for order: " + orderDetail.getId());
         }
     }

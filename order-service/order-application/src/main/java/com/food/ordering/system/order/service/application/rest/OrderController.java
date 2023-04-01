@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/orders", produces =  "application/vnd.api.v1+json")
+@RequestMapping(value = "/orders", produces = "application/vnd.api.v1+json")
 public class OrderController {
 
     private final OrderApplicationService orderApplicationService;
@@ -24,7 +24,8 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<CreateOrderResponse> createOrder(@RequestBody CreateOrderCommand createOrderCommand) {
-        log.info("Creating order for costumer: {} at restaurant: {}", createOrderCommand.getCustomerId(), createOrderCommand.getRestaurantId());
+        log.info("Creating order for customer: {} at restaurant: {}", createOrderCommand.getCustomerId(),
+                createOrderCommand.getRestaurantId());
         CreateOrderResponse createOrderResponse = orderApplicationService.createOrder(createOrderCommand);
         log.info("Order created with tracking id: {}", createOrderResponse.getOrderTrackingId());
         return ResponseEntity.ok(createOrderResponse);
