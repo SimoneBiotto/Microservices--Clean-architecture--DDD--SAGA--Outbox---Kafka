@@ -1,9 +1,6 @@
 package com.food.ordering.system.order.service.domain.mapper;
 
-import com.food.ordering.system.domain.valueobject.CustomerId;
-import com.food.ordering.system.domain.valueobject.Money;
-import com.food.ordering.system.domain.valueobject.ProductId;
-import com.food.ordering.system.domain.valueobject.RestaurantId;
+import com.food.ordering.system.domain.valueobject.*;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.system.order.service.domain.dto.create.OrderAddress;
@@ -19,30 +16,25 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//compoment -> si puo injectare e puo essere usato come bean
 @Component
 public class OrderDataMapper {
 
     public Restaurant createOrderCommandToRestaurant(CreateOrderCommand createOrderCommand) {
         return Restaurant.builder()
                 .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
-                .products(createOrderCommand
-                        .getItems()
-                        .stream().
-                        map(orderItem ->
-                                new Product(new ProductId(orderItem.getProductId())))
-                                .collect(Collectors.toList()))
+                .products(createOrderCommand.getItems().stream().map(orderItem ->
+                        new Product(new ProductId(orderItem.getProductId())))
+                        .collect(Collectors.toList()))
                 .build();
     }
-
-    // non setto trackingid, orderid e orderstatus in quanto viene definito dalle business rules
+    
     public Order createOrderCommandToOrder(CreateOrderCommand createOrderCommand) {
         return Order.builder()
                 .customerId(new CustomerId(createOrderCommand.getCustomerId()))
                 .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
-                .deliveryAddress(orderAddressToDeliveryAddress(createOrderCommand.getAddress()))
+                .deliveryAddress(orderAddressToStreetAddress(createOrderCommand.getAddress()))
                 .price(new Money(createOrderCommand.getPrice()))
-                .items(orderItemsToOrderItemsEntity(createOrderCommand.getItems()))
+                .items(orderItemsToOrderItemEntities(createOrderCommand.getItems()))
                 .build();
     }
 
@@ -54,31 +46,32 @@ public class OrderDataMapper {
                 .build();
     }
 
-    private List<OrderItem> orderItemsToOrderItemsEntity(List<com.food.ordering.system.order.service.domain.dto.create.OrderItem> orderItems) {
-        return orderItems.stream()
-                .map(orderItem -> OrderItem.builder()
-                        .product(new Product(new ProductId(orderItem.getProductId())))
-                        .price(new Money(orderItem.getPrice()))
-                        .quantity(orderItem.getQuantity())
-                        .subTotal(new Money(orderItem.getSubTotal()))
-                        .build()
-                ).collect(Collectors.toList());
-    }
-
-    private StreetAddress orderAddressToDeliveryAddress(OrderAddress orderAddress) {
-        return new StreetAddress(
-                UUID.randomUUID(),
-                orderAddress.getStreet(),
-                orderAddress.getPostalCode(),
-                orderAddress.getCity()
-        );
-    }
-
     public TrackOrderResponse orderToTrackOrderResponse(Order order) {
         return TrackOrderResponse.builder()
                 .orderTrackingId(order.getTrackingId().getValue())
                 .orderStatus(order.getOrderStatus())
                 .failureMessages(order.getFailureMessages())
                 .build();
+    }
+
+    private List<OrderItem> orderItemsToOrderItemEntities(
+            List<com.food.ordering.system.order.service.domain.dto.create.OrderItem> orderItems) {
+        return orderItems.stream()
+                .map(orderItem ->
+                        OrderItem.builder()
+                                .product(new Product(new ProductId(orderItem.getProductId())))
+                                .price(new Money(orderItem.getPrice()))
+                                .quantity(orderItem.getQuantity())
+                                .subTotal(new Money(orderItem.getSubTotal()))
+                                .build()).collect(Collectors.toList());
+    }
+
+    private StreetAddress orderAddressToStreetAddress(OrderAddress orderAddress) {
+        return new StreetAddress(
+                UUID.randomUUID(),
+                orderAddress.getStreet(),
+                orderAddress.getPostalCode(),
+                orderAddress.getCity()
+        );
     }
 }
